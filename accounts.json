@@ -1,5 +1,7 @@
-{
-  "name": "username",
-  "type": "premium",
-  "password": "yourpassword"
-}
+[
+  {
+    "name": "someuser",
+    "type": "free",
+    "password": "somepassword"
+  }
+]
