@@ -23,7 +23,7 @@ jobs:
   add_account:
     runs-on: ubuntu-latest
     permissions:
-      contents: write   # <--- Ensures GITHUB_TOKEN can push!
+      contents: write   # Ensures GITHUB_TOKEN can push!
 
     steps:
       - uses: actions/checkout@v4
@@ -39,12 +39,15 @@ jobs:
             echo "[]" > accounts.json
           fi
 
-      - name: Add new account to accounts.json
+      - name: Upsert account (unique by name)
         run: |
           jq --arg name "${{ github.event.inputs.account_name }}" \
              --arg type "${{ github.event.inputs.account_type }}" \
-             --arg password "${{ github.event.inputs.account_password }}" \
-             '. += [{"name": $name, "type": $type, "password": $password}]' accounts.json > tmp.json
+             --arg password "${{ github.event.inputs.account_password }}" '
+            # Remove accounts with the same name, then add the new/updated one
+            map(select(.name != $name)) +
+            [{"name": $name, "type": $type, "password": $password}]
+          ' accounts.json > tmp.json
           mv tmp.json accounts.json
 
       - name: Commit and push changes
@@ -57,6 +60,6 @@ jobs:
           if git diff --cached --quiet; then
             echo "No changes to commit."
           else
-            git commit -m "Add account: ${{ github.event.inputs.account_name }} (${{ github.event.inputs.account_type }})"
+            git commit -m "Add or update account: ${{ github.event.inputs.account_name }} (${{ github.event.inputs.account_type }})"
             git push
           fi
