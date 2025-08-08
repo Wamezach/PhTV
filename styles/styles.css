@@ -1,0 +1,101 @@
+:root {
+  --primary-color: #2d6cdf;
+  --background-color: #e0e7ff;
+  --text-color: #18191a;
+  --highlight: #144cb8;
+  --card-color: #fff;
+  --input-color: #f5f7fa;
+  --tag-color: #dde3ea;
+  --shadow-color: rgba(31, 38, 135, 0.13);
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, var(--background-color) 0%, var(--input-color) 100%);
+  color: var(--text-color);
+  margin: 0;
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+.login-wrapper {
+  max-width: 400px;
+  margin: 4rem auto 0 auto;
+  background: var(--card-color);
+  box-shadow: 0 4px 16px var(--shadow-color);
+  border-radius: 14px;
+  padding: 2rem 2rem 1.5rem 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.login-title {
+  font-size: 1.3rem;
+  margin-bottom: 1.5rem;
+  color: var(--primary-color);
+  font-weight: 600;
+}
+
+.login-field {
+  width: 100%;
+  margin-bottom: 1.2rem;
+}
+
+.login-label {
+  margin-bottom: .4rem;
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--text-color);
+}
+
+.login-input {
+  width: 100%;
+  padding: .6em 1em;
+  border: 1px solid var(--tag-color);
+  border-radius: 6px;
+  font-size: 1.1rem;
+  background: var(--input-color);
+  color: var(--text-color);
+  transition: border-color 0.2s;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.login-input:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px var(--primary-color)33;
+}
+
+.login-btn {
+  background: var(--primary-color);
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 6px;
+  padding: .6em 1.5em;
+  cursor: pointer;
+  margin-top: .5rem;
+  width: 100%;
+  transition: background .2s;
+}
+
+.login-btn:hover {
+  background: var(--highlight);
+}
+
+.login-message {
+  margin-top: 1rem;
+  padding: .7em 1em;
+  border-radius: 6px;
+  background: #fde4e4;
+  color: #d13232;
+  font-size: 1rem;
+  text-align: center;
+}
+
+.login-message.success {
+  background: #e0f7e9;
+  color: #187541;
+}
