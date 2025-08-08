@@ -1,1 +1,7 @@
-[]
+[
+  {
+    "name": "someuser",
+    "type": "free",
+    "password": "somepassword"
+  }
+]
