@@ -22,15 +22,21 @@ on:
 jobs:
   add_account:
     runs-on: ubuntu-latest
-    # Remove or update this line if you want to allow other users to run the workflow
-    if: github.actor == 'Wamezach'
-
     steps:
       - uses: actions/checkout@v4
 
-      - name: Ensure accounts.json exists
+      - name: Force accounts.json to be an array
         run: |
-          if [ ! -f accounts.json ]; then echo '[]' > accounts.json; fi
+          if [ -f accounts.json ]; then
+            if head -n1 accounts.json | grep -q '^{'; then
+              mv accounts.json accounts.bak
+              echo "[" > accounts.json
+              cat accounts.bak >> accounts.json
+              echo "]" >> accounts.json
+            fi
+          else
+            echo "[]" > accounts.json
+          fi
 
       - name: Add new account to accounts.json
         run: |
@@ -44,7 +50,6 @@ jobs:
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
           git add accounts.json
-          # Only commit if there are changes
           if git diff --cached --quiet; then
             echo "No changes to commit."
           else
