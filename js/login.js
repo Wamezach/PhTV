@@ -1,4 +1,4 @@
-// Basic login: fetch and check against accounts.json
+// Basic login: fetch and check against accounts.json, then redirect to dashboard.html on success
 
 document.getElementById('loginForm').addEventListener('submit', async function (e) {
   e.preventDefault();
@@ -13,6 +13,7 @@ document.getElementById('loginForm').addEventListener('submit', async function (
   let accounts = [];
   try {
     const res = await fetch('accounts.json');
+    if (!res.ok) throw new Error("Network error");
     accounts = await res.json();
   } catch (err) {
     loginMessage.textContent = "Error loading accounts database.";
@@ -28,8 +29,6 @@ document.getElementById('loginForm').addEventListener('submit', async function (
     return;
   }
 
-  loginMessage.textContent = "Login successful! Welcome, " + username + ".";
-  loginMessage.classList.add('success');
-  loginMessage.style.display = 'block';
-  // Optionally hide the form or redirect, etc.
+  // On success, redirect to dashboard.html inside pages folder
+  window.location.href = "pages/dashboard.html";
 });
