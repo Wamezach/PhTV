@@ -25,10 +25,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Force accounts.json to be an array
+      - name: Ensure accounts.json is an array
         run: |
           if [ -f accounts.json ]; then
-            if head -n1 accounts.json | grep -q '^{'; then
+            if ! jq 'type == "array"' accounts.json | grep -q true; then
               mv accounts.json accounts.bak
               echo "[" > accounts.json
               cat accounts.bak >> accounts.json
