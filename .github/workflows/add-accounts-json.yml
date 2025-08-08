@@ -22,7 +22,7 @@ on:
 jobs:
   add_account:
     runs-on: ubuntu-latest
-    if: github.actor == 'anon_harley'
+    if: github.actor == 'WamezachWamezach'
 
     steps:
       - uses: actions/checkout@v4
