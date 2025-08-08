@@ -1,15 +1,5 @@
 [
   {
-    "name": "someuser",
-    "type": "free",
-    "password": "somepassword"
-  },
-  {
-    "name": "free",
-    "type": "free",
-    "password": "free"
-  },
-  {
     "name": "free",
     "type": "free",
     "password": "free"
