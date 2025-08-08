@@ -1,0 +1,43 @@
+name: Add Account (JSON)
+
+on:
+  workflow_dispatch:
+    inputs:
+      account_name:
+        description: 'Account Name'
+        required: true
+        type: string
+      account_type:
+        description: 'Account Type'
+        required: true
+        type: choice
+        options:
+          - free
+          - premium
+
+jobs:
+  add_account:
+    runs-on: ubuntu-latest
+    if: github.actor == 'anon_harley'
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Ensure accounts.json exists
+        run: |
+          if [ ! -f accounts.json ]; then echo '[]' > accounts.json; fi
+
+      - name: Add new account to accounts.json
+        run: |
+          jq '. += [{"name": "${{ github.event.inputs.account_name }}", "type": "${{ github.event.inputs.account_type }}"}]' accounts.json > tmp.json
+          mv tmp.json accounts.json
+
+      - name: Commit and push changes
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git add accounts.json
+          git commit -m "Add account: ${{ github.event.inputs.account_name }} (${{ github.event.inputs.account_type }})"
+          git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
