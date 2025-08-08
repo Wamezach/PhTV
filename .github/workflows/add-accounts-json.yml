@@ -23,7 +23,7 @@ jobs:
   add_account:
     runs-on: ubuntu-latest
     # Remove or update this line if you want to allow other users to run the workflow
-    if: github.actor == 'WamezachWamezach'
+    if: github.actor == 'Wamezach'
 
     steps:
       - uses: actions/checkout@v4
