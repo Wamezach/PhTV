@@ -3,5 +3,10 @@
     "name": "free",
     "type": "free",
     "password": "free"
+  },
+  {
+    "name": "free2",
+    "type": "free",
+    "password": "free2"
   }
 ]
