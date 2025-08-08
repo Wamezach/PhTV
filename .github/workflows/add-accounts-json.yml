@@ -14,6 +14,10 @@ on:
         options:
           - free
           - premium
+      account_password:
+        description: 'Account Password'
+        required: true
+        type: string
 
 jobs:
   add_account:
@@ -29,7 +33,7 @@ jobs:
 
       - name: Add new account to accounts.json
         run: |
-          jq '. += [{"name": "${{ github.event.inputs.account_name }}", "type": "${{ github.event.inputs.account_type }}"}]' accounts.json > tmp.json
+          jq '. += [{"name": "${{ github.event.inputs.account_name }}", "type": "${{ github.event.inputs.account_type }}", "password": "${{ github.event.inputs.account_password }}"}]' accounts.json > tmp.json
           mv tmp.json accounts.json
 
       - name: Commit and push changes
