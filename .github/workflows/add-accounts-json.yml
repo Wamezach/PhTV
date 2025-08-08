@@ -22,6 +22,9 @@ on:
 jobs:
   add_account:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write   # <--- Ensures GITHUB_TOKEN can push!
+
     steps:
       - uses: actions/checkout@v4
 
@@ -29,10 +32,8 @@ jobs:
         run: |
           if [ -f accounts.json ]; then
             if ! jq 'type == "array"' accounts.json | grep -q true; then
-              mv accounts.json accounts.bak
-              echo "[" > accounts.json
-              cat accounts.bak >> accounts.json
-              echo "]" >> accounts.json
+              echo "File is not a JSON array! Overwriting with empty array."
+              echo "[]" > accounts.json
             fi
           else
             echo "[]" > accounts.json
@@ -40,15 +41,18 @@ jobs:
 
       - name: Add new account to accounts.json
         run: |
-          jq '. += [{"name": "${{ github.event.inputs.account_name }}", "type": "${{ github.event.inputs.account_type }}", "password": "${{ github.event.inputs.account_password }}"}]' accounts.json > tmp.json
+          jq --arg name "${{ github.event.inputs.account_name }}" \
+             --arg type "${{ github.event.inputs.account_type }}" \
+             --arg password "${{ github.event.inputs.account_password }}" \
+             '. += [{"name": $name, "type": $type, "password": $password}]' accounts.json > tmp.json
           mv tmp.json accounts.json
 
       - name: Commit and push changes
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          git config --global user.name 'github-actions[bot]'
-          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git config user.name 'github-actions[bot]'
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
           git add accounts.json
           if git diff --cached --quiet; then
             echo "No changes to commit."
